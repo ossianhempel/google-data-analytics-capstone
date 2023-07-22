@@ -1,10 +1,9 @@
 library(tidyverse)
 
+daily_activity <- read_csv("repos/google-data-analytics-capstone/fitabase_data/daily_activity_data.csv")
+daily_sleep <- read_csv("repos/google-data-analytics-capstone/fitabase_data/daily_sleep_data.csv")
 
-daily_activity <- read_csv("repos/google-data-analytics-capstone/fitabase_data/dailyActivity_merged.csv")
-daily_sleep <- read_csv("repos/google-data-analytics-capstone/fitabase_data/sleepDay_merged.csv")
-
-
+"********** Process **********"
 
 # How is the data organized? Is it in long or wide format?
 head(daily_activity)
@@ -61,4 +60,27 @@ print(daily_activity_sorted)
 daily_sleep$SleepDay <- as.Date(daily_sleep$SleepDay) # Convert the date column to Date type if it's not already
 daily_sleep_sorted <- df[order(daily_sleep$SleepDay), ]
 print(daily_sleep_sorted)
+
+"********** Process **********"
+
+# Remove duplicates from the sleep data
+daily_sleep_sorted <- daily_sleep_sorted[!duplicated(daily_sleep_sorted), ]
+
+# Rename 'SleepDay' column to 'ActivityDate' in the sleep data
+names(daily_sleep_sorted)[names(daily_sleep_sorted) == "SleepDay"] <- "ActivityDate"
+
+# Perform a left join on 'Id' and 'ActivityDate'
+merged_df <- merge(daily_activity_sorted, daily_sleep_sorted, by = c("Id", "ActivityDate"), all.x = TRUE)
+
+# Check the type of date column
+print(class(merged_df$ActivityDate))
+
+# Convert 'ActivityDate' to Date type
+merged_df$ActivityDate <- as.Date(merged_df$ActivityDate, format = "%m/%d/%Y")
+
+# Check the class again to confirm the conversion
+print(class(merged_df$ActivityDate))
+
+# Check data types of all columns
+str(merged_df)
 
