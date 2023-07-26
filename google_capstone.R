@@ -54,11 +54,11 @@ print(duplicate_entries_sleep) # 3 duplicate entries
 
 # Convert both date columns to Date type and sort on date instead of ID 
 daily_activity$ActivityDate <- as.Date(daily_activity$ActivityDate) # Convert the date column to Date type if it's not already
-daily_activity_sorted <- df[order(daily_activity$ActivityDate), ]
+daily_activity_sorted <- daily_activity[order(daily_activity$ActivityDate), ]
 print(daily_activity_sorted)
 
 daily_sleep$SleepDay <- as.Date(daily_sleep$SleepDay) # Convert the date column to Date type if it's not already
-daily_sleep_sorted <- df[order(daily_sleep$SleepDay), ]
+daily_sleep_sorted <- daily_sleep[order(daily_sleep$SleepDay), ]
 print(daily_sleep_sorted)
 
 "********** Process **********"
@@ -83,4 +83,34 @@ print(class(merged_df$ActivityDate))
 
 # Check data types of all columns
 str(merged_df)
+
+# Save merged data frame as CSV
+#write.csv(merged_df, "merged_data.csv", row.names = FALSE)
+
+"Create two separate data frames, one with only activity data, and one only containing complete data using the sleep data as well"
+
+# Create a dataframe with all data (will focus on activity data)
+activity_data <- merged_df
+
+# Create a dataframe with only complete sleep data
+sleep_data <- na.omit(merged_df[, c("TotalSleepRecords", "TotalMinutesAsleep", "TotalTimeInBed")])
+
+# Check the dimensions of the original data, activity data, and sleep data
+original_shape <- dim(merged_df)
+activity_shape <- dim(activity_data)
+sleep_shape <- dim(sleep_data)
+
+print(paste("Original data dimensions: ", original_shape[1], "x", original_shape[2]))
+print(paste("Activity data dimensions: ", activity_shape[1], "x", activity_shape[2]))
+print(paste("Sleep data dimensions: ", sleep_shape[1], "x", sleep_shape[2]))
+
+"This indicates that we have removed 350 rows with missing sleep data."
+
+"********** Analyze **********"
+
+"1. What are some trends in smart device usage?"
+
+"2. How could these trends apply to Bellabeat customers?"
+
+"3. How could these trends help inﬂuence Bellabeat marketing strategy?"
 
