@@ -118,9 +118,6 @@ head(hourly_activity$ActivityHour)
 head(hourly_calories$ActivityHour)
 head(daily_sleep$SleepDay)
 
-
-"********** Process **********"
-
 "DAILY DATA"
 # Convert 'ActivityDate' to Date type
 daily_activity$ActivityDate <- as.Date(daily_activity$ActivityDate, format = "%m/%d/%Y")
